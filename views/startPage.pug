@@ -1,0 +1,87 @@
+extends layout
+
+block content
+	form(
+		id='form'
+	)
+		center
+			input(
+				type='text'
+				name='value'
+				placeholder='Input your text'
+				id='text-input'
+			)
+			br
+			input(
+				type='button'
+				value='Add'
+				id='add-button'
+			)
+	form(
+		id='sort-form'
+	)
+		p(id='text-line') Sort by:
+		input(
+			type='radio'
+			name='sort-radiobutton'
+			value='ascnumber'
+			id='number-sort'
+			checked
+		)
+		label(for='number-sort') Number
+		input(
+			type='radio'
+			name='sort-radiobutton'
+			value='descnumber'
+			id='rnumber-sort'
+		)
+		label(for='rnumber-sort') Reverse number
+		input(
+			type='radio'
+			name='sort-radiobutton'
+			value='asc'
+			id='alphabet-sort'
+		)
+		label(for='alphabet-sort') Alphabet
+		input(
+			type='radio'
+			name='sort-radiobutton'
+			value='desc'
+			id='ralphabet-sort'
+		)
+		label(for='ralphabet-sort') Reverse alphabet
+	center
+		ul(
+			id='list-item'
+		)
+			each elem in rows
+				li
+					a #{elem.ID}
+					a #{elem.value}
+					input(
+						type='button'
+						class='delete'
+						id='dbutton'
+						value='X'
+					)
+					input(
+						type='button'
+						class='edit'
+						id='editbutton'
+						value='Edit'
+					)
+					input(
+						type='button'
+						class='ok'
+						id='okbutton'
+						value='Ok'
+					)
+					input(
+						type='button'
+						class='cansel'
+						id='canselbutton'
+						value='Cansel'
+					)
+	script(src='/javascripts/script.js')
+				
+		

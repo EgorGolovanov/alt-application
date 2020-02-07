@@ -1,0 +1,65 @@
+#add-button {
+	background: #ff00ff;
+	border-radius: 10px;
+	padding: .7em 1.5em;
+	outline: none;
+	margin-bottom: 20px;
+	margin-top: 20px;
+	width: 150px;
+	font-size: 14pt;
+}
+
+#form,
+#sort-form {
+	background: #c0c0c0;
+	border: 3px solid #000;
+	border-radius: 10px;
+	width: 500px;
+	margin: 0 auto;
+	margin-bottom: 20px;
+}
+
+#text-line {
+	font-size: 14pt;
+	text-align: center;
+}
+
+#text-input {
+	background: #dcdcdc;
+	border-radius: 10px;
+	margin-bottom: 20px;
+	margin-top: 20px;
+	height: 50px;
+	width: 250px;
+	font-size: 14pt;
+}
+
+#list-item {
+	font-size: 16pt;
+}
+
+#dbutton,
+#editbutton {
+	background: #fff;
+	outline: none;
+	font-size: 16pt;
+	border: 0;
+}
+
+#okbutton,
+#canselbutton {
+	background: #fff;
+	outline: none;
+	font-size: 16pt;
+	border: 0;
+	display: none;
+}
+
+li {
+	list-style-type: none;
+}
+
+a, p {
+	margin-left: 20px;
+	margin-right: 20px;
+}
