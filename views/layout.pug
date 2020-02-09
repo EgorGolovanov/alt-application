@@ -1,7 +1,14 @@
 doctype html
 html
-  head
-    title='ALT-Application'
-    link(rel='stylesheet', href='/stylesheets/my_style.css')
-  body
-    block content
+	head
+		title='ALT-Application'
+		link(rel='stylesheet', href='/stylesheets/my_style.css')
+	body
+		header
+			if (user)
+				a Welcome, #{user.username}!
+				a( href='/users/logout') Logout
+			if (!user)
+				a( href='/users/login') Login
+				a( href='/users/register') Register
+	block content

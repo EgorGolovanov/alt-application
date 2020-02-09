@@ -2,8 +2,8 @@
 const dbutton = "<button class=\"delete\" id=\"dbutton\">X</button>";
 const editbutton = "<button class=\"edit\" id=\"editbutton\">Edit</button>";
 const okbutton = "<button class=\"ok\" id=\"okbutton\">Ok</button>";
-const canselbutton = "<button class=\"cansel\" id=\"canselbutton\">Cansel</button>";
-const blockOfButtons = dbutton + editbutton + okbutton + canselbutton;
+const cancelbutton = "<button class=\"cancel\" id=\"cancelbutton\">Cancel</button>";
+const blockOfButtons = dbutton + editbutton + okbutton + cancelbutton;
 
 //слушатель для обработки событий при нажатии на кнопку "add"
 document.getElementById("add-button").addEventListener("click", addToUlAJAX);
@@ -56,16 +56,16 @@ document.querySelector('ul').addEventListener("click", function(e) {
 	li.insertBefore(input, li.children[1]);
 });
 
-//слушатель для обработки событий при нажатии на кнопку "cansel" или "ok"
+//слушатель для обработки событий при нажатии на кнопку "cancel" или "ok"
 document.querySelector('ul').addEventListener("click", function(e) {
-	const canselbutton = e.target.closest('.cansel');
+	const cancelbutton = e.target.closest('.cancel');
 	const okbutton = e.target.closest('.ok');
 	
-	if (!okbutton && !canselbutton) {
+	if (!okbutton && !cancelbutton) {
 		return;
 	}
 	
-	let li = okbutton ? okbutton.parentElement : canselbutton.parentElement;
+	let li = okbutton ? okbutton.parentElement : cancelbutton.parentElement;
 	let new_text = li.children[1].value;
 	let id = li.children[0].text;
 	
@@ -99,6 +99,8 @@ document.querySelector('ul').addEventListener("click", function(e) {
 //слушатель для обработки событий при выборе сортировки списка
 document.addEventListener("click", function(e) {
 	if (e.target && (e.target.matches("input[name='sort-radiobutton']"))) {
+		let listItem = document.getElementById('list-item').children;
+		
 		listSort(e.target.value);
 	}
 });

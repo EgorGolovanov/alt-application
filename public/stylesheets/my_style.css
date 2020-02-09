@@ -1,4 +1,6 @@
-#add-button {
+#add-button,
+button.submit-button,
+button.cancel-button {
 	background: #ff00ff;
 	border-radius: 10px;
 	padding: .7em 1.5em;
@@ -9,8 +11,8 @@
 	font-size: 14pt;
 }
 
-#form,
-#sort-form {
+
+form {
 	background: #c0c0c0;
 	border: 3px solid #000;
 	border-radius: 10px;
@@ -24,7 +26,8 @@
 	text-align: center;
 }
 
-#text-input {
+#text-input,
+input.form-control {
 	background: #dcdcdc;
 	border-radius: 10px;
 	margin-bottom: 20px;
@@ -35,22 +38,22 @@
 }
 
 #list-item {
-	font-size: 16pt;
+	font-size: 14pt;
 }
 
 #dbutton,
 #editbutton {
 	background: #fff;
 	outline: none;
-	font-size: 16pt;
+	font-size: 14pt;
 	border: 0;
 }
 
 #okbutton,
-#canselbutton {
+#cancelbutton {
 	background: #fff;
 	outline: none;
-	font-size: 16pt;
+	font-size: 14pt;
 	border: 0;
 	display: none;
 }
@@ -62,4 +65,5 @@ li {
 a, p {
 	margin-left: 20px;
 	margin-right: 20px;
+	font-size: 14pt;
 }

@@ -1,0 +1,28 @@
+doctype html
+html
+	head
+		title='Registration'
+		link(rel='stylesheet', href='/stylesheets/my_style.css')
+	body
+		.container
+			br
+			form(
+				role='form'
+				action="/users/register"
+				method="post"
+			)
+				center
+					input.form-control(
+						type='text'
+						name="username"
+						placeholder='Enter Username'
+					)
+					input.form-control(
+						type='password'
+						name="password"
+						placeholder='Password'
+					)
+					br
+					button.submit-button(type='submit') Register
+					a(href='/')
+						button.cancel-button(type="button") Cancel
