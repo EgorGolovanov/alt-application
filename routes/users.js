@@ -15,27 +15,28 @@ connection.connect(function(err) {
 });
 
 router.get('/login', function(req, res, next) {
-	res.render('loginForm', { });
+	res.render('loginForm', { error : req.flash('loginMessage') });
 });
 
-router.post('/login', passport.authenticate('login'), function(req, res) {
-	console.log(req.user);
-	console.log(req.user.ID);
-	console.log(req.user.username);
-	res.redirect('/');
-});
+router.post('/login', passport.authenticate('login', { 	
+	successRedirect: '/',
+	failureRedirect: '/users/login',
+	failureFlash: true 
+}));
 
 router.get('/register', function(req, res) {
-	res.render('registerForm', { });
+	res.render('registerForm', { error : req.flash('signupMessage') });
 });
 
-router.post('/register', passport.authenticate('signup'), function(req, res) {
-	res.redirect('/users/login');
-});
+router.post('/register', passport.authenticate('signup', {
+	successRedirect: '/users/login',
+	failureRedirect: '/users/register',
+	failureFlash: true
+}));
 
 router.get('/logout', function(req, res) {
 	req.logout();
-	res.redirect('/users/login');
+	res.redirect('/');
 });
 
 module.exports = router;

@@ -24,3 +24,6 @@ html
 				button.submit-button(type='submit') Login
 				a(href='/')
 					button.cancel-button(type="button") Cancel
+				br
+				if (error)
+					a(style='color: red') #{error}
