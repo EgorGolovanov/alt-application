@@ -1,0 +1,25 @@
+extend layout
+
+block content
+    div( class='account')
+        div( class='users-avatar')
+            form(
+                ref='uploadForm'
+                id='uploadForm'
+                class='avatar-form'
+                action='/users/account'
+                method='post'
+                enctype="multipart/form-data"
+            )
+                center
+                    img(src=avatarUrl, alt="Download avatar error! Please try later.")
+                    br
+                    input( type='file' name="filedata") 
+                    br
+                    button.changeAvatar-button(type='submit' id='changeAvatar-button') Change avatar 
+                    if (error)
+                        p( style='color: red') #{error}
+                    div( class='user-info')
+                        p Username: #{user.username}
+
+

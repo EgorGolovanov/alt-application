@@ -5,6 +5,7 @@ const okbutton = "<button class=\"ok\" id=\"okbutton\">Ok</button>";
 const cancelbutton = "<button class=\"cancel\" id=\"cancelbutton\">Cancel</button>";
 const blockOfButtons = dbutton + editbutton + okbutton + cancelbutton;
 
+
 //слушатель для обработки событий при нажатии на кнопку "add"
 document.getElementById("add-button").addEventListener("click", addToUlAJAX);
 
@@ -99,9 +100,7 @@ document.querySelector('ul').addEventListener("click", function(e) {
 //слушатель для обработки событий при выборе сортировки списка
 document.addEventListener("click", function(e) {
 	if (e.target && (e.target.matches("input[name='sort-radiobutton']"))) {
-		let listItem = document.getElementById('list-item').children;
-		
-		listSort(e.target.value);
+		Sorting(e.target);
 	}
 });
 
@@ -121,8 +120,8 @@ function addToUlAJAX() {
 			let res = req.response;
 			let ul = document.getElementById("list-item");
 			let li = document.createElement("li");
-			let number = "<a>" + res.ID + "</a>"
-			let value = "<a>" + res.Value + "</a>";
+			let number = "<a class= id>" + res.ID + "</a>"
+			let value = "<a class= value>" + res.Value + "</a>";
 			
 			li.innerHTML = number + value + blockOfButtons;
 			ul.append(li);
@@ -136,52 +135,56 @@ function addToUlAJAX() {
 	req.send("value=" + text.value);
 }
 
-
-//функция для сортировки списка
-function listSort(fields) {
-	let textList = [], numberList = [], index;
-	let list = li = document.getElementsByTagName("li");
+//функция для сортировки ul списка, где fields - входное условие для выбора сортировки
+function Sorting(fields) {
+    let listUl = document.getElementById('list-item');
+    let parent = listUl.parentNode;
+	let newList = Sort(fields); 
 	
-	//создание временных массивов для сортировки 
-	for (let i = 0; i < list.length; i++) {
-		textList.push(list[i].children[1].text.toLowerCase());
-		numberList.push(list[i].children[0].text);
-	}
-	
-	let newTextList = textList.slice();
-	let newNumberList = numberList.slice();
-	
-	//сортировка в зависимости от входных параметров
-	if (fields.indexOf('number') == -1) {
-		textList.sort();
-		
-		if (fields.indexOf('asc') == -1) textList.reverse();
-		
-		//относительно сортировки по алфавиту меняем числовой массив
-		for (let i = 0; i < newTextList.length; i++) {
-			index = newTextList.indexOf(textList[i]);
-			newNumberList[i] = numberList[index];
-		}
-		
-		newTextList = textList;
-	} else {
-		numberList.sort();
-		
-		if (fields.indexOf('asc') == -1) numberList.reverse();
-		
-		//относительно сортировки по числам меняем текстовый массив
-		for (let i = 0; i < newNumberList.length; i++) {
-			index = newNumberList.indexOf(numberList[i]);
-			newTextList[i] = textList[index];
-		}
-		
-		newNumberList = numberList;
-	}
-	
-	//перезапись отсортированных массивов в исходный список
-	for (let i = 0; i < list.length; i++) {
-		list[i].children[0].text = newNumberList[i];
-		list[i].children[1].text = newTextList[i];
-	}
+    parent.insertBefore(newList, listUl);
+    parent.removeChild(listUl);
+    
+    newList.id = 'list-item';
 }
 
+//функция создания ul по входному массиву
+function makeUl(array) {
+    let list = document.createElement('ul'); 
+
+    for (let i = 0; i < array.length; i++) {
+        list.appendChild(array[i]);
+    }
+
+    return list;
+}
+
+//функция сортировки массива по id или value
+function Sort(fields) {
+    var nodeList = document.querySelectorAll('li');
+    var itemsArray = [];
+
+    for (var i = 0; i < nodeList.length; i++) {    
+        itemsArray.push(nodeList[i]);
+    }
+
+    itemsArray.sort(function(nodeA, nodeB) {
+        //выбор нужнго поля для сортировки
+        let textA = nodeA.querySelector('.' + fields.value).text;
+        let textB = nodeB.querySelector('.' + fields.value).text;
+        //проверка числовая или текстовая сортировка
+        let A = parseInt(textA);
+        let B = parseInt(textB);
+        
+        if (!A) A = textA;        
+        if (!B) B = textB;
+        
+        if (A < B) return -1;
+        if (A > B) return 1;
+
+        return 0;
+    });
+
+    if (fields.className.indexOf('asc') == -1) itemsArray.reverse();
+    
+    return makeUl(itemsArray);
+}

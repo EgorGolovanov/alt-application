@@ -8,6 +8,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var mysql = require('mysql');
 var flash = require('req-flash');
 var crypto = require('crypto');
+var fileUpload = require('express-fileupload')
 
 var connection = mysql.createConnection({
 	host     : 'localhost',
@@ -33,13 +34,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(require('express-session')({
-    secret: 'kjhLKhvsdkjhfdjHUE',
+	secret: 'kjhLKhvsdkjhfdjHUE',
+	resave: true,
     saveUninitialized: true
 }));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(fileUpload());
+//app.use(multer({dest:'./public/images'}).single("filedata"));
+app.use('/users', express.static(path.join(__dirname + '/public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -64,6 +69,7 @@ function(req, username, password, done) {
 	});
 }));
 
+//Стратегия регистрации
 passport.use('signup', new LocalStrategy ({
 	usernameField : 'username',
 	passwordField : 'password',
@@ -98,7 +104,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-	connection.query("SELECT * FROM ALT_Database.users WHERE ID=" + id, function(err, rows) {
+	connection.query("SELECT ID, username, avatar_url FROM ALT_Database.users WHERE ID=" + id, function(err, rows) {
 		done(err, rows[0]);
 	});
 });

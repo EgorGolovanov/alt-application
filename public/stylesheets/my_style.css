@@ -11,6 +11,24 @@ button.cancel-button {
 	font-size: 14pt;
 }
 
+html {
+	background-color: lightskyblue;
+}
+
+head {
+	background-color: lightskyblue;
+}
+
+header {
+	background-color: aqua;
+	height: 40px;
+	border-radius: 25px;
+	line-height: 40px;
+}
+
+body {
+	background-color: lightskyblue;
+}
 
 form {
 	background: #c0c0c0;
@@ -19,6 +37,12 @@ form {
 	width: 500px;
 	margin: 0 auto;
 	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+img {
+	width: 200px;
+	height: 200px;
 }
 
 #text-line {

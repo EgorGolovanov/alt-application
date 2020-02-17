@@ -18,16 +18,18 @@ connection.connect(function(err) {
 
 router.get('/', function(req, res, next) {
 	
-	if (!req.user) res.render('startPage', { rows: [], user : req.user });
-	
+	if (!req.user) return res.render('startPage', { rows: [], user : req.user });
+
 	let query = "SELECT * FROM ALT_Database.express WHERE user_id=" + req.user.ID;
 	
 	if (req.query.sort && nameOfSort.includes(req.query.sort)) {
+		
 		query += (" ORDER BY " + req.query.sort);
 	}
 	
 	connection.query(query, function(err, rows, fields) {
 		if (err) return console.log(err);
+		
 		res.render('startPage', { rows, user : req.user });
 	});
 
@@ -72,8 +74,6 @@ router.post('/:id', function(req, res, next) {
 router.delete('/:id', function(req,res, next) {
 	
 	let query = "DELETE FROM ALT_Database.express WHERE ID=" + req.params.id + " AND user_id=" + req.user.ID;
-	
-	console.log(query);
 	
 	connection.query(query, function(err, result) {
 		if (err) {
