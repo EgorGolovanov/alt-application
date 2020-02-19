@@ -51,17 +51,13 @@ router.get('/logout', function(req, res) {
 });
 
 router.get('/account', function(req, res, next) {
-	if (req.user.avatar_url === '') {
-		res.render('accountPage', { user : req.user, avatarUrl : 'images/default.png' });
-	} else {
-		res.render('accountPage', { user : req.user, avatarUrl : req.user.avatar_url });
-	}
+	res.render('accountPage', { user : req.user });
 });
 
 router.post('/account', function(req, res, next) {
 
 	if (!req.files || Object.keys(req.files).length === 0) {
-		return res.render('accountPage', { user : req.user, avatarUrl : req.user.avatar_url, error : "No selected files" });
+		return res.render('accountPage', { user : req.user, error : "No selected files" });
 	}	
 
 	let sampleFile = req.files.filedata;
@@ -71,22 +67,22 @@ router.post('/account', function(req, res, next) {
 
 		sampleFile.mv('public/' + localPath, function(err) {
 			if (err)
-				return res.render('accountPage', { user : req.user, avatarUrl : req.user.avatar_url, error : "Saved error" });
+				return res.render('accountPage', { user : req.user, error : "Saved error" });
 		});
-
-		let query = "UPDATE ALT_Database.users SET avatar_url=\'" + localPath + "\' WHERE ID=" + req.user.ID;;
-
-		connection.query(query, function(err, result) {
+		
+		connection.query("UPDATE ALT_Database.users SET avatar_url = :Path WHERE ID = :Id", 
+		{Path: localPath, Id: parseInt(req.user.ID, 10)}, 
+		function(err, result) {
 			if (err) {
-				return res.render('accountPage', { user : req.user, avatarUrl : req.user.avatar_url, error : "Server error" });
+				return res.render('accountPage', { user : req.user, error : "Server error" });
 			}
 			
 			req.user.avatar_url = localPath;
 
-			return res.render('accountPage', { user : req.user, avatarUrl : req.user.avatar_url });
+			return res.render('accountPage', { user : req.user});
 		});
 	}
-	return res.render('accountPage', { user : req.user, avatarUrl : req.user.avatar_url });
+	return res.render('accountPage', { user : req.user});
 });
 
 module.exports = router;

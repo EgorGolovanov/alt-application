@@ -12,7 +12,10 @@ block content
                 enctype="multipart/form-data"
             )
                 center
-                    img(src=avatarUrl, alt="Download avatar error! Please try later.")
+                    if (!user.avatar_url)
+                        img(src='images/default.png', alt="Download avatar error! Please try later.")
+                    else
+                        img(src=user.avatar_url, alt="Download avatar error! Please try later.")
                     br
                     input( type='file' name="filedata") 
                     br

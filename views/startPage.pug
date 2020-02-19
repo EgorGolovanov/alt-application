@@ -56,6 +56,8 @@ block content
 			)
 			label(for='ralphabet-sort') Reverse alphabet
 		center
+			if (error)
+				a(style='color: red') #{err}
 			ul(
 				id='list-item'
 			)

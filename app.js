@@ -43,7 +43,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
-//app.use(multer({dest:'./public/images'}).single("filedata"));
 app.use('/users', express.static(path.join(__dirname + '/public')));
 
 app.use('/', indexRouter);
@@ -56,9 +55,11 @@ passport.use('login', new LocalStrategy ({
 	passReqToCallback : true
 },
 function(req, username, password, done) {
-	connection.query("SELECT * FROM ALT_Database.users WHERE username='" + username + "'", 
+	console.log(mysql.escape(username)); 
+	connection.query("SELECT * FROM ALT_Database.users WHERE username=" + mysql.escape(username), 
 	function(err, rows) {
-		if (err) return done(err);
+		console.log(rows);
+		if (err) return done(null, false, req.flash('loginMessage', 'SQL error!'));
 		
 		if (!rows.length) return done(null, false, req.flash('loginMessage', 'No user found!'));
 		
@@ -76,9 +77,9 @@ passport.use('signup', new LocalStrategy ({
 	passReqToCallback : true
 },
 function(req, username, password, done) {
-	connection.query("SELECT * FROM ALT_Database.users WHERE username = '" + username + "'", 
+	connection.query("SELECT * FROM ALT_Database.users WHERE username=" + mysql.escape(username), 
 	function(err, rows) {
-		if (err) return done(err);
+		if (err) return done(null, false, req.flash('signupMessage', 'SQL error!'));;
 		
 		if (rows.length) {
 		
@@ -89,7 +90,8 @@ function(req, username, password, done) {
 			newUser.username = username;
 			newUser.password = crypto.createHash('sha1', 'password').update(password).digest('base64');
 			
-			connection.query("INSERT INTO ALT_Database.users (username, password) VALUES ('" + newUser.username + "','" + newUser.password + "')", 
+			connection.query("INSERT INTO ALT_Database.users (username, password) VALUES (:Username,:Password)",
+			{Username: mysql.escape(newUser.username), Password: mysql.escape(newUser.password)}, 
 			function(err, rows) {
 				newUser.ID = rows.insertId;
 				
@@ -104,7 +106,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-	connection.query("SELECT ID, username, avatar_url FROM ALT_Database.users WHERE ID=" + id, function(err, rows) {
+	connection.query("SELECT ID, username, avatar_url FROM ALT_Database.users WHERE ID=" + parseInt(id, 10), function(err, rows) {
 		done(err, rows[0]);
 	});
 });
