@@ -13,16 +13,30 @@ block content
             )
                 center
                     if (!user.avatar_url)
-                        img(src='images/default.png', alt="Download avatar error! Please try later.")
+                        img(
+                            src='images/default.png' 
+                            alt="Download avatar error! Please try later."
+                            onclick='download()'
+                        )
                     else
-                        img(src=user.avatar_url, alt="Download avatar error! Please try later.")
+                        img(
+                            src=user.avatar_url 
+                            alt="Download avatar error! Please try later."
+                            onclick='download()'
+                        )
                     br
-                    input( type='file' name="filedata" id='uploadfile' class='inputFile' title = ' ')
+                    input( 
+                        type='file' 
+                        name='filedata' 
+                        id='uploadfile' 
+                        class='inputFile'
+                    )
                     br
                     button.changeAvatar-button(type='submit' id='changeAvatar-button') Change avatar 
                     if (error)
-                        p( style='color: red') #{error}
+                        p(style='color: red') #{error}
                     div( class='user-info')
                         p Username: #{user.username}
+    script(src='/javascripts/uploadFile.js')
 
 

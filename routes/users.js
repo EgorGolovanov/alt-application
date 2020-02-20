@@ -56,11 +56,10 @@ router.post('/account', function(req, res, next) {
 	if (!req.files || Object.keys(req.files).length === 0) {
 		return res.render('accountPage', { 
 			user : req.user, 
-			error : "No selected files" 
+			error : "Click on image to select file and try again!" 
 		});
-	}	
-	console.log(req.files.filedata);
-	
+	}
+
 	let sampleFile = req.files.filedata;
 
 	if (CheckValidFile(sampleFile.mimetype)) {
