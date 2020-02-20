@@ -1,0 +1,131 @@
+#add-button,
+button.submit-button,
+button.cancel-button,
+button.changeAvatar-button {
+	background: #ff00ff;
+	border-radius: 10px;
+	padding: .7em 1.5em;
+	outline: none;
+	margin-bottom: 20px;
+	margin-top: 20px;
+	width: 150px;
+	font-size: 14pt;
+}
+
+html {
+	background-color: lightskyblue;
+}
+
+head {
+	background-color: lightskyblue;
+}
+
+header {
+	background-color: aqua;
+	height: 40px;
+	border-radius: 25px;
+	line-height: 40px;
+}
+
+body {
+	background-color: lightskyblue;
+}
+
+form {
+	background: #c0c0c0;
+	border: 3px solid #000;
+	border-radius: 10px;
+	width: 500px;
+	margin: 0 auto;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+img {
+	width: 200px;
+	height: 200px;
+}
+
+#text-line {
+	font-size: 14pt;
+	text-align: center;
+}
+
+.inputFile {
+	color: transparent;
+}
+
+.inputFile::-webkit-file-upload-button {
+	visibility: hidden;
+}
+
+.inputFile::before {
+	content: 'Select image';
+	color: black;
+	display: inline-block;
+	background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
+	border: 1px solid #999;
+	border-radius: 3px;
+	padding: 5px 8px;
+	outline: none;
+	white-space: nowrap;
+	-webkit-user-select: none;
+	cursor: pointer;
+	text-shadow: 1px 1px #fff;
+	font-weight: 700;
+	font-size: 10pt;
+}
+
+.inputFile:hover::before {
+	border-color: black;
+}
+
+.inputFile:active {
+	outline: 0;
+}
+
+.inputFile:active::before {
+	background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9); 
+}
+
+#text-input,
+input.form-control {
+	background: #dcdcdc;
+	border-radius: 10px;
+	margin-bottom: 20px;
+	margin-top: 20px;
+	height: 50px;
+	width: 250px;
+	font-size: 14pt;
+}
+
+#list-item {
+	font-size: 14pt;
+}
+
+#dbutton,
+#editbutton {
+	background: lightskyblue;
+	outline: none;
+	font-size: 14pt;
+	border: 0;
+}
+
+#okbutton,
+#cancelbutton {
+	background: lightskyblue;
+	outline: none;
+	font-size: 14pt;
+	border: 0;
+	display: none;
+}
+
+li {
+	list-style-type: none;
+}
+
+a, p {
+	margin-left: 20px;
+	margin-right: 20px;
+	font-size: 14pt;
+}
