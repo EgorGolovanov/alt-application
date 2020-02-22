@@ -8,8 +8,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var flash = require('req-flash');
 var crypto = require('crypto');
 var fileUpload = require('express-fileupload')
-
-var connection = require('../alt-application/config/config');
+var models = require('../alt-application/models');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -46,18 +45,24 @@ passport.use('login', new LocalStrategy ({
 	passReqToCallback : true
 },
 function(req, username, password, done) {
-	let values = ['users', 'username', username];
+	models.users.findAll({
+		attributes: ['id', 'username', 'password', 'avatar_url'],
+		where: {
+			username: username
+		}, 
+		raw: true
+	})
+	.then(res=>{
+		if (!res.length) return done(null, false, req.flash('loginMessage', 'No user found!'));
 
-	connection.query("SELECT * FROM ?? WHERE ?? = ?", values, 
-	function(err, rows) {
-		if (err) return done(null, false, req.flash('loginMessage', 'SQL error!'));
-		
-		if (!rows.length) return done(null, false, req.flash('loginMessage', 'No user found!'));
-		
-		if (!(rows[0].password == crypto.createHash('sha1', 'password').update(password).digest('base64')))
+		if (!(res[0].password == crypto.createHash('sha1', 'password').update(password).digest('base64')))
 			return done(null, false, req.flash('loginMessage', 'Wrong password!'));
-		
-		return done(null, rows[0]);
+	
+		return done(null, res[0]);
+	})
+	.catch(err=>{
+		console.log(err);
+		return done(null, false, req.flash('loginMessage', 'SQL error!'));
 	});
 }));
 
@@ -68,45 +73,49 @@ passport.use('signup', new LocalStrategy ({
 	passReqToCallback : true
 },
 function(req, username, password, done) {
-	let values = ['users', 'username', username];
-	
-	connection.query("SELECT * FROM ?? WHERE ?? = ?", values, 
-	function(err, rows) {
-		if (err) return done(null, false, req.flash('signupMessage', 'SQL error!'));;
-		
-		if (rows.length) {
-		
+
+	models.users.findAll({
+		attributes: ['id', 'username'],
+		where: {
+			username: username
+		}, 
+		raw: true
+	})
+	.then(res=>{
+		if (res.length) {
 			return done(null, false, req.flash('signupMessage', 'That username is already exist'));
 		} else {
-			let newUser = new Object();
-			
-			newUser.username = username;
-			newUser.password = crypto.createHash('sha1', 'password').update(password).digest('base64');
-			
-			connection.query("INSERT INTO ?? (??, ??) VALUES (?,?)",
-			['users', 'username', 'password', newUser.username, newUser.password],
-			function(err, rows) {
-				newUser.ID = rows.insertId;
-				
-				return done(null, newUser);
-			});
+			let newUser = { 
+				username: username, 
+				password: crypto.createHash('sha1', 'password').update(password).digest('base64') 
+			};
+			models.users.create(newUser)
+			.then((result)=>{
+				return done(null, result);
+			}).catch(error=>{
+				return done(null, false, req.flash('signupMessage', 'SQL error!'));		
+			})
 		}
+	})
+	.catch(err=>{
+		return done(null, false, req.flash('signupMessage', 'SQL error!'));
 	});
 }));
 
 passport.serializeUser(function(user, done) {
-	done(null, user.ID);
+	done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
-	
-	let columns = ['ID', 'username', 'avatar_url'];
-	let values = [columns, 'users', 'ID', id];
-	
-	connection.query("SELECT ?? FROM ?? WHERE ?? = ?", values, 
-	function(err, rows) {
-		done(err, rows[0]);
-	});
+	models.users.findOne({
+		attributes: ['id', 'username', 'avatar_url'],
+		where: {
+			id: id
+		}
+	}).then(user=>{
+    	if(!user) return;
+    	done(null, user);
+	}).catch(err=>done(err, user));
 });
 
 // catch 404 and forward to error handler

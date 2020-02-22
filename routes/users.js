@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 let path = require('path');
 let passport = require('passport');
-let connection = require('../config/config');
+let models = require('../models');
 
 let MIMETYPE = [
 	'image/jpeg',
@@ -74,26 +74,26 @@ router.post('/account', function(req, res, next) {
 				});
 		});
 		
-		let query = "UPDATE ?? SET ?? = ? WHERE ?? = ?"
-		let values = ['users', 'avatar_url', localPath, 'ID', req.user.ID];
-
-		connection.query(query, values,
-		function(err, result) {
-			if (err) {
-				return res.render('accountPage', { 
-					user : req.user, 
-					error : "Server error" 
-				});
+		let updateItem = { avatar_url: localPath };
+		
+		models.users.update(updateItem, {
+			where: {
+				id: req.user.id
 			}
-			
+		}).then((result) => {				
 			req.user.avatar_url = localPath;
 
 			return res.render('accountPage', { 
 				user : req.user
 			});
+		}).catch(err=>{
+			return res.render('accountPage', { 
+				user : req.user, 
+				error : "Server error" 
+			});
 		});
 	}
-	return res.render('accountPage', { user : req.user});
+	return res.render('accountPage', { user : req.user });
 });
 
 module.exports = router;

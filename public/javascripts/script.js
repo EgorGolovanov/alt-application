@@ -170,7 +170,9 @@ function Sort(fields) {
         //проверка числовая или текстовая сортировка
         let A = parseInt(textA);
         let B = parseInt(textB);
-        
+		
+		if (!A && B) B = textB;
+		if (!B && A) A = textA;
         if (!A) A = textA;
         if (!B) B = textB;
         
