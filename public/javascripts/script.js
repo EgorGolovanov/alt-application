@@ -40,7 +40,6 @@ document.querySelector('ul').addEventListener("click", function(e) {
 	if (!editbutton) {
 		return;
 	}
-	let newtext = document.getElementById("text-input");
 	let li = editbutton.parentElement;
 	
 	li.children[1].style.display = "none";
@@ -156,8 +155,8 @@ function makeUl(array) {
 
 //функция сортировки массива по id или value
 function Sort(fields) {
-    var nodeList = document.querySelectorAll('li');
-    var itemsArray = [];
+    let nodeList = document.querySelectorAll('li');
+    let itemsArray = [];
 
     for (var i = 0; i < nodeList.length; i++) {    
         itemsArray.push(nodeList[i]);

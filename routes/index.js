@@ -1,5 +1,5 @@
 const nameOfSort = ['id asc', 'id desc', 'value asc', 'value desc'];
-const authenticationMiddleware = require('../middleware/middleware');
+const authenticationMiddleware = require('../middleware/middleware').authenticationMiddleware;
 
 let express = require('express');
 let router = express.Router();

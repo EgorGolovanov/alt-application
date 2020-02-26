@@ -1,7 +1,8 @@
 #add-button,
-button.submit-button,
-button.cancel-button,
-button.changeAvatar-button {
+.submit-button,
+.register-button,
+.cancel-button,
+.changeAvatar-button {
 	background: #ff00ff;
 	border-radius: 10px;
 	padding: .7em 1.5em;

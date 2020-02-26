@@ -21,16 +21,22 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+//use session
 app.use(require('express-session')({
 	secret: 'kjhLKhvsdkjhfdjHUE',
 	resave: true,
     saveUninitialized: true
 }));
+//use flash messages
 app.use(flash());
+//initialize passport
 app.use(passport.initialize());
+//use passport session
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
+//use fileupload
 app.use(fileUpload());
+//use static directory for '/users' router
 app.use('/users', express.static(path.join(__dirname + '/public')));
 
 app.use('/', indexRouter);

@@ -1,4 +1,4 @@
-const authenticationMiddleware = require('../middleware/middleware');
+const { authenticationMiddleware, isLogginIn } = require('../middleware/middleware');
 
 var express = require('express');
 var router = express.Router();
@@ -18,26 +18,24 @@ function CheckValidFile(mimetype) {
 }
 
 //Отображение страницы авторизации
-router.get('/login', function(req, res) {
-	if (req.isAuthenticated())
-		res.redirect('/');
+router.get('/login', isLogginIn, function(req, res) {
 	res.render('loginForm', { error : req.flash('loginMessage') });
 });
 
 //Аутентификация пользователя
-router.post('/login', passport.authenticate('login', { 	
+router.post('/login', isLogginIn, passport.authenticate('login', { 	
 	successRedirect: '/',
 	failureRedirect: '/users/login',
 	failureFlash: true 
 }));
 
 //Отображение страницы регистрации
-router.get('/register', function(req, res) {
+router.get('/register', isLogginIn, function(req, res) {
 	res.render('registerForm', { error : req.flash('signupMessage') });
 });
 
 //Добавление нового пользователя в БД
-router.post('/register', passport.authenticate('signup', {
+router.post('/register', isLogginIn, passport.authenticate('signup', {
 	successRedirect: '/users/login',
 	failureRedirect: '/users/register',
 	failureFlash: true
