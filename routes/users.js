@@ -1,3 +1,5 @@
+const authenticationMiddleware = require('../middleware/middleware');
+
 var express = require('express');
 var router = express.Router();
 let path = require('path');
@@ -16,7 +18,9 @@ function CheckValidFile(mimetype) {
 }
 
 //Отображение страницы авторизации
-router.get('/login', function(req, res, next) {
+router.get('/login', function(req, res) {
+	if (req.isAuthenticated())
+		res.redirect('/');
 	res.render('loginForm', { error : req.flash('loginMessage') });
 });
 
@@ -46,12 +50,12 @@ router.get('/logout', function(req, res) {
 });
 
 //Отображение страницы аккаунта пользователя
-router.get('/account', function(req, res, next) {
+router.get('/account', authenticationMiddleware, function(req, res) {
 	res.render('accountPage', { user : req.user });
 });
 
 //Изменение аватара пользователя
-router.post('/account', function(req, res, next) {
+router.post('/account', authenticationMiddleware, function(req, res) {
 
 	if (!req.files || Object.keys(req.files).length === 0) {
 		return res.render('accountPage', { 

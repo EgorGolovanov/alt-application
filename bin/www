@@ -6,7 +6,6 @@
 
 var app = require('../app');
 var debug = require('debug')('express-sequelize');
-//('alt-application:server');
 var http = require('http');
 var models = require('../models');
 

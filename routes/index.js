@@ -1,17 +1,13 @@
 const nameOfSort = ['id asc', 'id desc', 'value asc', 'value desc'];
+const authenticationMiddleware = require('../middleware/middleware');
 
 let express = require('express');
 let router = express.Router();
 let models = require('../models');
 
 //Получение данных из БД
-router.get('/', function(req, res, next) {
-	
-	if (!req.user) return res.render('startPage', { 
-		rows: [], 
-		user : req.user 
-	});
-	
+router.get('/', authenticationMiddleware, function(req, res) {
+
 	let order = nameOfSort[0].split(' ');
 
 	if (req.query.sort && nameOfSort.includes(req.query.sort)) { 
@@ -40,8 +36,8 @@ router.get('/', function(req, res, next) {
 });
 
 //Добавление объекта в БД
-router.post('/', function(req, res, next) {
-	
+router.post('/', authenticationMiddleware, function(req, res) {
+
 	if (!req.body) {
 		return res.status(500).json({ 
 			ID: 'None', 
@@ -72,8 +68,8 @@ router.post('/', function(req, res, next) {
 });
 
 //Изменение объекта в БД
-router.post('/:id', function(req, res, next) {
-	
+router.post('/:id', authenticationMiddleware, function(req, res) {
+
 	if (!req.body.value) {
 		return res.status(500).json({ 
 			ID: 'None', 
@@ -103,7 +99,7 @@ router.post('/:id', function(req, res, next) {
 });
 
 //Удаление объекта из БД
-router.delete('/:id', function(req,res, next) {
+router.delete('/:id', authenticationMiddleware, function(req,res) {
 	models.tasks.destroy({
 		where: {
 			id: req.params.id,
