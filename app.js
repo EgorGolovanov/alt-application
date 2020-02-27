@@ -38,6 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
 //use static directory for '/users' router
 app.use('/users', express.static(path.join(__dirname + '/public')));
+app.use('/css/bootstrap.css', express.static('node_modules/bootstrap/dist/css/bootstrap.css'));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

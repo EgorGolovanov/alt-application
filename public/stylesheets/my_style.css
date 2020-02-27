@@ -12,24 +12,10 @@
 	width: 150px;
 	font-size: 14pt;
 }
-
-html {
-	background-color: lightskyblue;
-}
-
+html,
+body,
 head {
-	background-color: lightskyblue;
-}
-
-header {
-	background-color: aqua;
-	height: 40px;
-	border-radius: 25px;
-	line-height: 40px;
-}
-
-body {
-	background-color: lightskyblue;
+	background-color: #6c757d;
 }
 
 form {
@@ -74,19 +60,25 @@ input.form-control {
 
 #dbutton,
 #editbutton {
-	background: lightskyblue;
+	background: #6c757d;
 	outline: none;
 	font-size: 14pt;
+	color: white;
 	border: 0;
 }
 
 #okbutton,
 #cancelbutton {
-	background: lightskyblue;
+	background: #6c757d;
 	outline: none;
 	font-size: 14pt;
+	color: white;
 	border: 0;
 	display: none;
+}
+
+label {
+	margin-right: 15px;
 }
 
 li {
